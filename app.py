@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QMainWindow,
 )
 from components.frontPage import FrontPage
+from components.setincome import SetIncome
 
 
 class MainWindow(QMainWindow):
@@ -10,11 +11,11 @@ class MainWindow(QMainWindow):
         self.setFixedSize(850, 600)  # Set fixed size for the main window
         self.setWindowTitle("Enhanced PyQt Application")
 
-        self.front_page = FrontPage()
+        self.front_page = FrontPage(self)
         self.setCentralWidget(self.front_page)
 
 if __name__ == '__main__':
     app = QApplication([])
     main_window = MainWindow()
     main_window.show()
-    app.exec_()
+    app.exec()

@@ -49,9 +49,7 @@ class AddSpending(QWidget):
 
 
         self.buttonLayout = QHBoxLayout()
-        self.cancel = QPushButton("Cancel")
         self.setButton = QPushButton("Enter")
-        self.buttonLayout.addWidget(self.cancel)
         self.buttonLayout.addWidget(self.setButton)
         self.buttonWidget = QWidget()
         self.buttonWidget.setLayout(self.buttonLayout)
@@ -103,10 +101,21 @@ class AddSpending(QWidget):
                 border: none;
                 width: 0px;
             }
-            QComboBox{
-                
+            QComboBox::drop-down{
+                background-image: url('./assets/downarrow.png');
+                width: 20px;
+                height: 20px;
+                background-color: #099eb1;
+                border: 1px solid #099eb1;
             }
-"""
+            QComboBox::drop-down:hover{
+                border: 1px solid white;
+            }
+            QComboBox::down-arrow{
+                width: 20px;
+                height: 20px;
+            }
+            """
     
     def button_style(self):
         return """
@@ -128,9 +137,3 @@ class AddSpending(QWidget):
                 border: 2px solid #099eb1;
             }
         """
-
-if __name__ == "__main__":
-    app = QApplication([])
-    w = AddSpending()
-    w.show()
-    app.exec()

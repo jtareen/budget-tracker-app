@@ -1,15 +1,20 @@
-from PyQt5.QtWidgets import ( QWidget, QVBoxLayout,
-    QHBoxLayout, QLabel, QPushButton
+from PySide6.QtWidgets import ( QWidget, QVBoxLayout,
+    QHBoxLayout, QLabel, QPushButton, QStackedLayout
 )
-from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtCore import Qt
+from components.setincome import SetIncome
+from components.picturewidget import PictureWidget
+from components.addspend import AddSpending
+
+from PySide6.QtGui import QFont
+from PySide6.QtCore import Qt
 import os
 
 baseadress = os.path.dirname(__file__)
 
 class FrontPage(QWidget):
-    def __init__(self):
+    def __init__(self, mainWindow):
         super().__init__()
+        self.mainWindow = mainWindow
         layout = QVBoxLayout()
 
         # Title 'Dashboard'
@@ -51,33 +56,16 @@ class FrontPage(QWidget):
         layout.addWidget(top_layout_widget)
 
         # Blue area with label and picture
-        picture_layout = QVBoxLayout()
-        
-        picture_label_layout = QVBoxLayout()
-        picture_label = QLabel("Graphical Representation of Expenses")
-        picture_label.setFont(QFont("Arial", 12, QFont.Bold))
-        picture_label.setAlignment(Qt.AlignCenter)
-        picture_label_widget = QWidget()
-        picture_label_widget.setLayout(picture_label_layout)
-        picture_label_widget.setFixedHeight(30)
-        picture_label_layout.addWidget(picture_label)
-        picture_layout.addWidget(picture_label_widget)
-        
-        picture = QLabel()
-        pixmap = QPixmap(os.path.join(baseadress, '../assets/graph.png'))
-        picture.setPixmap(pixmap.scaled(750, 300, Qt.KeepAspectRatio))
-        picture.setAlignment(Qt.AlignCenter)
-        picture.setStyleSheet("""
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        """)
-        
-        picture_layout.addWidget(picture)
-        picture_widget = QWidget()
-        picture_widget.setLayout(picture_layout)
-        
-        layout.addWidget(picture_widget)
+        pictureWidget = PictureWidget()
+        setIncomeWidget = SetIncome()
+        addSpendingWidget = AddSpending()
+
+        self.stackLayout = QStackedLayout()
+        self.stackLayout.addWidget(addSpendingWidget)
+        self.stackLayout.addWidget(setIncomeWidget)
+        self.stackLayout.addWidget(pictureWidget)
+
+        layout.addLayout(self.stackLayout)
 
         # Bottom purple buttons
         button_labels_text = ['Set Income', 'Add Spending', 'Show Expenses']
@@ -86,7 +74,7 @@ class FrontPage(QWidget):
             button = QPushButton(button_labels_text[i])
             button.setFixedSize(250, 50)
             
-            # button.clicked.connect()
+            button.clicked.connect(self.popup(i))
             button.setCursor(Qt.PointingHandCursor)
             button.setStyleSheet("""
                 QPushButton {
@@ -109,3 +97,20 @@ class FrontPage(QWidget):
         layout.addWidget(bottom_layout_widget)
 
         self.setLayout(layout)
+
+    def popup(self, index):
+        if index == 1:
+            self.set_income()
+        elif index == 2:
+            self.enter_spend()
+        else:
+            self.add_category()
+
+    def set_income(self):
+        pass
+
+    def enter_spend(self):
+        pass
+
+    def add_category(self):
+        pass

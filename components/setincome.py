@@ -4,38 +4,36 @@ class SetIncome(QWidget):
     def __init__(self):
         super().__init__()
         
-        self.layout = QVBoxLayout()
+        layout = QVBoxLayout()
 
-        self.label = QLabel("Enter Your Income")
-        self.label.setAlignment(Qt.AlignCenter)
-        self.label.setStyleSheet(self.title_style())
+        label = QLabel("Enter Your Income")
+        label.setAlignment(Qt.AlignCenter)
+        label.setStyleSheet(self.title_style())
 
-        self.input = QDoubleSpinBox()
-        self.input.setAlignment(Qt.AlignCenter)
-        self.input.setStyleSheet(self.input_style())
+        input = QDoubleSpinBox()
+        input.setAlignment(Qt.AlignCenter)
+        input.setStyleSheet(self.input_style())
 
-        self.buttonLayout = QHBoxLayout()
-        self.cancel = QPushButton("Cancel")
-        self.setButton = QPushButton("Set")
-        self.buttonLayout.addWidget(self.cancel)
-        self.buttonLayout.addWidget(self.setButton)
-        self.buttonWidget = QWidget()
-        self.buttonWidget.setLayout(self.buttonLayout)
-        self.buttonWidget.setStyleSheet(self.button_style())
+        buttonLayout = QHBoxLayout()
+        setButton = QPushButton("Set")
+        buttonLayout.addWidget(setButton)
+        buttonWidget = QWidget()
+        buttonWidget.setLayout(buttonLayout)
+        buttonWidget.setStyleSheet(self.button_style())
 
-        self.layout.addWidget(self.label)
-        self.layout.addWidget(self.input)
-        self.layout.addWidget(self.buttonWidget)
+        layout.addWidget(label)
+        layout.addWidget(input)
+        layout.addWidget(buttonWidget)
         
         widget = QWidget()
-        widget.setLayout(self.layout)
+        widget.setLayout(layout)
         widget.setFixedSize(400, 200)
         widget.setStyleSheet("background-color: white; border: 1px solid #099eb1;")
 
-        self.layout2 = QHBoxLayout()
-        self.layout2.addWidget(widget)
+        layout2 = QHBoxLayout()
+        layout2.addWidget(widget)
 
-        self.setLayout(self.layout2)
+        self.setLayout(layout2)
 
         
     

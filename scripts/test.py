@@ -57,16 +57,8 @@ def create_pie_chart(income, expenses):
 
     plt.title("Income and Expenses Distribution")
 
-    plt.savefig('graph')
+    file_path = "./assets/graph.png"
 
-if __name__ == '__main__':
-    expenses = Expenses()
-
-    expenses[0].add_amount(2000)
-
-    for e in expenses:
-        print(e.get_name(),':',e.get_amount())
-
-    expenses.add_expense('sports', 3000) 
-
-    print(Expense.total_expanse)
+    print("executed")
+    plt.savefig(file_path)
+    print("picture saved")

@@ -23,16 +23,16 @@ class PictureWidget(QWidget):
         picture_label_layout.addWidget(picture_label)
         picture_layout.addWidget(picture_label_widget)
         
-        picture = QLabel()
+        self.picture = QLabel()
         pixmap = QPixmap(os.path.join(baseadress, '../assets/graph.png'))
-        picture.setPixmap(pixmap.scaled(750, 300, Qt.KeepAspectRatio))
-        picture.setAlignment(Qt.AlignCenter)
-        picture.setStyleSheet("""
+        self.picture.setPixmap(pixmap.scaled(750, 300, Qt.KeepAspectRatio))
+        self.picture.setAlignment(Qt.AlignCenter)
+        self.picture.setStyleSheet("""
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 10px;
         """)
         
-        picture_layout.addWidget(picture)
+        picture_layout.addWidget(self.picture)
         self.setLayout(picture_layout)
         

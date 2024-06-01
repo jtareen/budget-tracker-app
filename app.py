@@ -2,7 +2,6 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow,
 )
 from components.frontPage import FrontPage
-from components.setincome import SetIncome
 
 
 class MainWindow(QMainWindow):

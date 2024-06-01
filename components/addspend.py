@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import (
-    QApplication,
     QLabel,
     QComboBox,
     QDoubleSpinBox,
@@ -9,9 +8,16 @@ from PySide6.QtWidgets import (
     QWidget
 )
 from PySide6.QtCore import Qt
+from scripts.test import Expense
+
 class AddSpending(QWidget):
-    def __init__(self):
+    def __init__(self, front_page):
         super().__init__()
+        self.front_page = front_page
+        self.expense_list = []
+
+        for i in self.front_page.expenses:
+            self.expense_list.append(i.get_name())
         
         self.layout = QVBoxLayout()
 
@@ -25,6 +31,10 @@ class AddSpending(QWidget):
         self.input1Label = QLabel("Amount :")
         self.input1Label.setStyleSheet("")
         self.input1 = QDoubleSpinBox()
+        self.input1.setMinimum(0.0)
+        self.input1.setMaximum(10000000.0)
+        self.input1.setDecimals(0)
+        self.input1.setValue(0)
         self.input1Layout.addWidget(self.input1Label)
         self.input1Layout.addWidget(self.input1)
         self.input1widget = QWidget()
@@ -33,7 +43,7 @@ class AddSpending(QWidget):
         self.input2Layout = QHBoxLayout()
         self.input2Label = QLabel("Category :")
         self.input2 = QComboBox()
-        self.input2.addItems(["item1", "item2", "item3", "item4", "item5"])
+        self.input2.addItems(self.expense_list)
         self.input2Layout.addWidget(self.input2Label)
         self.input2Layout.addWidget(self.input2)
         self.input2widget = QWidget()
@@ -47,9 +57,9 @@ class AddSpending(QWidget):
         self.inputwidget.setStyleSheet(self.input_style())
         self.inputwidget.setLayout(self.inputLayout)
 
-
         self.buttonLayout = QHBoxLayout()
         self.setButton = QPushButton("Enter")
+        self.setButton.clicked.connect(self.enter_button_clicked())
         self.buttonLayout.addWidget(self.setButton)
         self.buttonWidget = QWidget()
         self.buttonWidget.setLayout(self.buttonLayout)
@@ -137,3 +147,15 @@ class AddSpending(QWidget):
                 border: 2px solid #099eb1;
             }
         """
+    
+    def enter_button_clicked(self):
+        def enter_spending():
+            amount = self.input1.text()
+            index = self.input2.currentIndex()
+            self.input1.setValue(0)
+            self.input2.setCurrentIndex(0)
+            self.front_page.expenses[index].add_amount(int(amount))
+            self.front_page.text_fields[1].setText(str(Expense.total_expanse))
+            self.front_page.text_fields[2].setText(str(self.front_page.income-Expense.total_expanse))
+            
+        return enter_spending

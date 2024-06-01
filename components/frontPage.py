@@ -1,9 +1,11 @@
 from PySide6.QtWidgets import ( QWidget, QVBoxLayout,
     QHBoxLayout, QLabel, QPushButton, QStackedLayout
 )
+from PySide6.QtGui import QPixmap
 from components.setincome import SetIncome
 from components.picturewidget import PictureWidget
 from components.addspend import AddSpending
+from scripts.test import Expenses, create_pie_chart
 
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
@@ -16,6 +18,10 @@ class FrontPage(QWidget):
         super().__init__()
         self.mainWindow = mainWindow
         layout = QVBoxLayout()
+
+        # data variables
+        self.income = 0
+        self.expenses = Expenses()
 
         # Title 'Dashboard'
         title_layout = QVBoxLayout()
@@ -31,6 +37,7 @@ class FrontPage(QWidget):
 
         # Top white widgets with labels and text fields
         top_labels_text = ['Income', 'Spent', 'Remainig']
+        self.text_fields = []
         top_layout = QHBoxLayout()
         for i in range(3):
             widget_layout = QVBoxLayout()
@@ -40,6 +47,7 @@ class FrontPage(QWidget):
             text_field = QLabel("0")
             text_field.setFont(QFont("Arial", 18, QFont.Bold))  # Increase text field font size
             text_field.setAlignment(Qt.AlignCenter)  # Center align the text
+            self.text_fields.append(text_field)
             widget_layout.addWidget(label)
             widget_layout.addWidget(text_field)
             widget_widget = QWidget()
@@ -56,14 +64,14 @@ class FrontPage(QWidget):
         layout.addWidget(top_layout_widget)
 
         # Blue area with label and picture
-        pictureWidget = PictureWidget()
-        setIncomeWidget = SetIncome()
-        addSpendingWidget = AddSpending()
+        self.pictureWidget = PictureWidget()
+        setIncomeWidget = SetIncome(self)
+        addSpendingWidget = AddSpending(self)
 
         self.stackLayout = QStackedLayout()
-        self.stackLayout.addWidget(addSpendingWidget)
         self.stackLayout.addWidget(setIncomeWidget)
-        self.stackLayout.addWidget(pictureWidget)
+        self.stackLayout.addWidget(addSpendingWidget)
+        self.stackLayout.addWidget(self.pictureWidget)
 
         layout.addLayout(self.stackLayout)
 
@@ -74,7 +82,7 @@ class FrontPage(QWidget):
             button = QPushButton(button_labels_text[i])
             button.setFixedSize(250, 50)
             
-            button.clicked.connect(self.popup(i))
+            button.clicked.connect(self.switch_stack_widgets(i))
             button.setCursor(Qt.PointingHandCursor)
             button.setStyleSheet("""
                 QPushButton {
@@ -98,19 +106,11 @@ class FrontPage(QWidget):
 
         self.setLayout(layout)
 
-    def popup(self, index):
-        if index == 1:
-            self.set_income()
-        elif index == 2:
-            self.enter_spend()
-        else:
-            self.add_category()
-
-    def set_income(self):
-        pass
-
-    def enter_spend(self):
-        pass
-
-    def add_category(self):
-        pass
+    def switch_stack_widgets(self, index):
+        def switch():
+            if index == 2:
+                create_pie_chart(self.income, self.expenses)
+    
+                self.pictureWidget.picture.setPixmap(QPixmap(os.path.join(baseadress, '../assets/graph.png')).scaled(750, 300, Qt.KeepAspectRatio))
+            self.stackLayout.setCurrentIndex(index)
+        return switch

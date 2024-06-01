@@ -1,28 +1,34 @@
 from PySide6.QtWidgets import QLabel, QDoubleSpinBox, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
 from PySide6.QtCore import Qt
+from scripts.test import Expense
 class SetIncome(QWidget):
-    def __init__(self):
+    def __init__(self, front_page):
         super().__init__()
-        
+        self.front_page = front_page
         layout = QVBoxLayout()
 
         label = QLabel("Enter Your Income")
         label.setAlignment(Qt.AlignCenter)
         label.setStyleSheet(self.title_style())
 
-        input = QDoubleSpinBox()
-        input.setAlignment(Qt.AlignCenter)
-        input.setStyleSheet(self.input_style())
+        self.input = QDoubleSpinBox()
+        self.input.setMinimum(0.0)
+        self.input.setMaximum(10000000.0)
+        self.input.setDecimals(0)
+        self.input.setValue(0)
+        self.input.setAlignment(Qt.AlignCenter)
+        self.input.setStyleSheet(self.input_style())
 
         buttonLayout = QHBoxLayout()
         setButton = QPushButton("Set")
+        setButton.clicked.connect(self.set_button_clicked())
         buttonLayout.addWidget(setButton)
         buttonWidget = QWidget()
         buttonWidget.setLayout(buttonLayout)
         buttonWidget.setStyleSheet(self.button_style())
 
         layout.addWidget(label)
-        layout.addWidget(input)
+        layout.addWidget(self.input)
         layout.addWidget(buttonWidget)
         
         widget = QWidget()
@@ -81,3 +87,12 @@ class SetIncome(QWidget):
                 border: 2px solid #099eb1;
             }
         """
+    
+    def set_button_clicked(self):
+        def update_income():
+            self.front_page.income = int(self.input.text())
+            self.front_page.text_fields[0].setText(str(self.front_page.income))
+            self.front_page.text_fields[2].setText(str(self.front_page.income-Expense.total_expanse))
+            self.front_page.stackLayout.setCurrentIndex(1)
+            self.input.setValue(0)
+        return update_income

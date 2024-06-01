@@ -3,9 +3,12 @@ from PyQt5.QtWidgets import ( QWidget, QVBoxLayout,
 )
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
+import os
+
+baseadress = os.path.dirname(__file__)
 
 class FrontPage(QWidget):
-    def __init__(self, main_win):
+    def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
 
@@ -22,10 +25,11 @@ class FrontPage(QWidget):
         layout.addWidget(title_widget)
 
         # Top white widgets with labels and text fields
+        top_labels_text = ['Income', 'Spent', 'Remainig']
         top_layout = QHBoxLayout()
         for i in range(3):
             widget_layout = QVBoxLayout()
-            label = QLabel(f"Label {i + 1}")
+            label = QLabel(top_labels_text[i])
             label.setFont(QFont("Arial", 14))  # Increase label font size
             label.setAlignment(Qt.AlignCenter)  # Center align the text
             text_field = QLabel("0")
@@ -60,7 +64,7 @@ class FrontPage(QWidget):
         picture_layout.addWidget(picture_label_widget)
         
         picture = QLabel()
-        pixmap = QPixmap('./graph.png')
+        pixmap = QPixmap(os.path.join(baseadress, '../assets/graph.png'))
         picture.setPixmap(pixmap.scaled(750, 300, Qt.KeepAspectRatio))
         picture.setAlignment(Qt.AlignCenter)
         picture.setStyleSheet("""
@@ -76,12 +80,13 @@ class FrontPage(QWidget):
         layout.addWidget(picture_widget)
 
         # Bottom purple buttons
+        button_labels_text = ['Set Income', 'Add Spending', 'Show Expenses']
         bottom_layout = QHBoxLayout()
         for i in range(3):
-            button = QPushButton(f"Page {i + 2}")
+            button = QPushButton(button_labels_text[i])
             button.setFixedSize(250, 50)
             
-            button.clicked.connect(self.navigate_to_page(i + 1, main_win))
+            # button.clicked.connect()
             button.setCursor(Qt.PointingHandCursor)
             button.setStyleSheet("""
                 QPushButton {
@@ -104,8 +109,3 @@ class FrontPage(QWidget):
         layout.addWidget(bottom_layout_widget)
 
         self.setLayout(layout)
-
-    def navigate_to_page(self, index, main_win):
-        def switch():
-            main_win.stack.setCurrentIndex(index)
-        return switch

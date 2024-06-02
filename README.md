@@ -64,4 +64,4 @@ Contributions are welcome! Please fork the repository and create a pull request 
 5. Create a new Pull Request
 
 ## Contact
-For any questions or suggestions, please contact the project maintainer at [jtareen@example.com].
+For any questions or suggestions, please contact the project maintainer at [jtareen440@gmail.com].

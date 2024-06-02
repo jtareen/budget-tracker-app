@@ -59,6 +59,4 @@ def create_pie_chart(income, expenses):
 
     file_path = "./assets/graph.png"
 
-    print("executed")
     plt.savefig(file_path)
-    print("picture saved")
